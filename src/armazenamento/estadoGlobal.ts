@@ -21,7 +21,7 @@ export interface SinalVital {
 export interface HumorRegistro {
   id: string;
   moodId: string;
-  activity: string;
+  activity?: string;
   data: string;
 }
 
@@ -56,6 +56,7 @@ export interface PerfilUsuario {
   nome: string;
   fotoUri: string | null;
   telefone: string;
+  frequenciaAtividade?: string;
 }
 
 interface EstadoGlobal {

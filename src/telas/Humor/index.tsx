@@ -13,7 +13,6 @@ interface Props {
 
 export default function MoodScreen({ navigation }: Props) {
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
 
   const moods = [
     { id: 'feliz', label: 'Feliz', emoji: '😊' },
@@ -22,24 +21,18 @@ export default function MoodScreen({ navigation }: Props) {
     { id: 'ansioso', label: 'Ansioso', emoji: '😰' },
   ];
 
-  const activities = [
-    'Ativo (Pratico Exercícios)',
-    'De Vez em Quando',
-    'Não Pratico'
-  ];
 
   const addHumor = useEstadoGlobal((state) => state.addHumor);
   const historico = useEstadoGlobal((state) => state.humorHistorico);
 
   const handleSave = () => {
-    if (!selectedMood || !selectedActivity) {
-      Alert.alert('Erro', 'Selecione o seu humor e o nível de atividade física.');
+    if (!selectedMood) {
+      Alert.alert('Erro', 'Selecione o seu humor.');
       return;
     }
-    addHumor({ moodId: selectedMood, activity: selectedActivity });
+    addHumor({ moodId: selectedMood });
     Alert.alert('Salvo', 'O seu registro de hoje foi salvo com sucesso!');
     setSelectedMood(null);
-    setSelectedActivity(null);
   };
 
   return (
@@ -65,25 +58,6 @@ export default function MoodScreen({ navigation }: Props) {
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Prática de Exercícios Físicos</Text>
-        <View style={styles.activityList}>
-          {activities.map((activity) => (
-            <TouchableOpacity
-              key={activity}
-              style={[
-                styles.activityButton,
-                selectedActivity === activity && styles.selectedActivityButton
-              ]}
-              onPress={() => setSelectedActivity(activity)}
-              activeOpacity={0.7}
-            >
-              <Text style={[
-                styles.activityText,
-                selectedActivity === activity && styles.selectedActivityText
-              ]}>{activity}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Salvar</Text>
@@ -98,7 +72,7 @@ export default function MoodScreen({ navigation }: Props) {
               const emoji = moods.find(m => m.id === h.moodId)?.emoji || '';
               return (
                 <Text key={h.id} style={{color: '#333', marginBottom: 4}}>
-                  {new Date(h.data).toLocaleDateString()} - {emoji} | Atividade: {h.activity}
+                  {new Date(h.data).toLocaleDateString()} - {emoji} {h.activity ? `| Atividade: ${h.activity}` : ''}
                 </Text>
               )
             })

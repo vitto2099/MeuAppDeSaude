@@ -18,5 +18,18 @@ export const styles = StyleSheet.create({
   backButton: { backgroundColor: '#dc3545', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 'auto' },
   backButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
   historyContainer: { padding: 16, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#eee', marginBottom: 20 },
-  historyTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 }
+  historyTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 8 },
+  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
+  modalContent: { width: '90%', maxHeight: '80%', backgroundColor: '#fff', borderRadius: 12, padding: 20 },
+  modalTitle: { fontSize: 24, fontWeight: 'bold', color: '#28a745', marginBottom: 16 },
+  exerciseItem: { marginBottom: 16, borderBottomWidth: 1, borderBottomColor: '#eee', paddingBottom: 16 },
+  exerciseName: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 4 },
+  exerciseDesc: { fontSize: 14, color: '#666', lineHeight: 20 },
+  closeModalBtn: { backgroundColor: '#dc3545', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 10 },
+  closeModalText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  activityList: { marginBottom: 10 },
+  activityButton: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#ddd', borderRadius: 12, padding: 18, marginBottom: 12, alignItems: 'center' },
+  selectedActivityButton: { borderColor: '#28a745', backgroundColor: '#e6ffe6' },
+  activityText: { fontSize: 18, color: '#333', fontWeight: '500' },
+  selectedActivityText: { color: '#28a745', fontWeight: 'bold' }
 });
