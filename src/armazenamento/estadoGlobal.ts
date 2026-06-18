@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Lembrete {
   id: string;
@@ -53,6 +55,7 @@ export interface RegistroDor {
 interface EstadoGlobal {
   lembretes: Lembrete[];
   addLembrete: (lembrete: Omit<Lembrete, 'id'>) => void;
+  removeLembrete: (id: string) => void;
 
   sinaisVitais: SinalVital[];
   addSinalVital: (sinal: Omit<SinalVital, 'id' | 'data'>) => void;
@@ -73,39 +76,50 @@ interface EstadoGlobal {
   addRegistroDor: (dor: Omit<RegistroDor, 'id' | 'data'>) => void;
 }
 
-export const useEstadoGlobal = create<EstadoGlobal>((set) => ({
-  lembretes: [],
-  addLembrete: (lembrete) => set((state) => ({
-    lembretes: [...state.lembretes, { ...lembrete, id: Math.random().toString() }]
-  })),
+export const useEstadoGlobal = create<EstadoGlobal>()(
+  persist(
+    (set) => ({
+      lembretes: [],
+      addLembrete: (lembrete) => set((state) => ({
+        lembretes: [...state.lembretes, { ...lembrete, id: Math.random().toString() }]
+      })),
+      removeLembrete: (id) => set((state) => ({
+        lembretes: state.lembretes.filter(l => l.id !== id)
+      })),
 
-  sinaisVitais: [],
-  addSinalVital: (sinal) => set((state) => ({
-    sinaisVitais: [...state.sinaisVitais, { ...sinal, id: Math.random().toString(), data: new Date().toISOString() }]
-  })),
+      sinaisVitais: [],
+      addSinalVital: (sinal) => set((state) => ({
+        sinaisVitais: [...state.sinaisVitais, { ...sinal, id: Math.random().toString(), data: new Date().toISOString() }]
+      })),
 
-  humorHistorico: [],
-  addHumor: (humor) => set((state) => ({
-    humorHistorico: [...state.humorHistorico, { ...humor, id: Math.random().toString(), data: new Date().toISOString() }]
-  })),
+      humorHistorico: [],
+      addHumor: (humor) => set((state) => ({
+        humorHistorico: [...state.humorHistorico, { ...humor, id: Math.random().toString(), data: new Date().toISOString() }]
+      })),
 
-  medicamentos: [],
-  addMedicamento: (med) => set((state) => ({
-    medicamentos: [...state.medicamentos, { ...med, id: Math.random().toString() }]
-  })),
+      medicamentos: [],
+      addMedicamento: (med) => set((state) => ({
+        medicamentos: [...state.medicamentos, { ...med, id: Math.random().toString() }]
+      })),
 
-  sinaisEnfermagem: [],
-  addSinalEnfermagem: (sinal) => set((state) => ({
-    sinaisEnfermagem: [...state.sinaisEnfermagem, { ...sinal, id: Math.random().toString(), data: new Date().toISOString() }]
-  })),
+      sinaisEnfermagem: [],
+      addSinalEnfermagem: (sinal) => set((state) => ({
+        sinaisEnfermagem: [...state.sinaisEnfermagem, { ...sinal, id: Math.random().toString(), data: new Date().toISOString() }]
+      })),
 
-  treinos: [],
-  addTreino: (treino) => set((state) => ({
-    treinos: [...state.treinos, { ...treino, id: Math.random().toString(), data: new Date().toISOString() }]
-  })),
+      treinos: [],
+      addTreino: (treino) => set((state) => ({
+        treinos: [...state.treinos, { ...treino, id: Math.random().toString(), data: new Date().toISOString() }]
+      })),
 
-  historicoDor: [],
-  addRegistroDor: (dor) => set((state) => ({
-    historicoDor: [...state.historicoDor, { ...dor, id: Math.random().toString(), data: new Date().toISOString() }]
-  })),
-}));
+      historicoDor: [],
+      addRegistroDor: (dor) => set((state) => ({
+        historicoDor: [...state.historicoDor, { ...dor, id: Math.random().toString(), data: new Date().toISOString() }]
+      })),
+    }),
+    {
+      name: 'meu-app-saude-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);

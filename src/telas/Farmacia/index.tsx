@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../App';
-import { useEstadoGlobal } from '../armazenamento/estadoGlobal';
+import { RootStackParamList } from '../../../App';
+import { useEstadoGlobal } from '../../armazenamento/estadoGlobal';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
+import { styles } from './styles';
 
 type FarmaciaScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Farmacia'>;
 
@@ -33,6 +36,61 @@ export default function TelaFarmacia({ navigation }: Props) {
     addMedicamento({ nome, dosagem, forma, estoque });
     setIsAdding(false);
     setNome(''); setDosagem(''); setForma(''); setEstoque('');
+  };
+
+  const handleGeneratePDF = async () => {
+    if (medicamentos.length === 0) {
+      Alert.alert('Atenção', 'Você não possui medicamentos cadastrados para gerar o relatório.');
+      return;
+    }
+
+    let rows = medicamentos.map(med => `
+      <tr>
+        <td>${med.nome}</td>
+        <td>${med.dosagem}</td>
+        <td>${med.forma}</td>
+        <td>${med.estoque}</td>
+      </tr>
+    `).join('');
+
+    const html = `
+      <html>
+        <head>
+          <style>
+            body { font-family: 'Helvetica', sans-serif; padding: 20px; }
+            h1 { color: #0056b3; text-align: center; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            th { background-color: #0056b3; color: white; }
+          </style>
+        </head>
+        <body>
+          <h1>Relatório de Medicamentos (Farmácia)</h1>
+          <p>Confira abaixo a lista atualizada de medicamentos em estoque do paciente:</p>
+          <table>
+            <tr>
+              <th>Nome</th>
+              <th>Dosagem</th>
+              <th>Formato</th>
+              <th>Estoque</th>
+            </tr>
+            ${rows}
+          </table>
+        </body>
+      </html>
+    `;
+
+    try {
+      const { uri } = await Print.printToFileAsync({ html });
+      const isSharingAvailable = await Sharing.isAvailableAsync();
+      if (isSharingAvailable) {
+        await Sharing.shareAsync(uri);
+      } else {
+        Alert.alert('Aviso', 'O compartilhamento não está disponível neste dispositivo.');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível gerar o PDF.');
+    }
   };
 
   return (
@@ -69,9 +127,14 @@ export default function TelaFarmacia({ navigation }: Props) {
         <View style={styles.listContainer}>
           <View style={styles.headerRow}>
             <Text style={styles.title}>Farmácia</Text>
-            <TouchableOpacity style={styles.addButton} onPress={() => setIsAdding(true)}>
-              <Text style={styles.addButtonText}>+ Adicionar</Text>
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row', gap: 10}}>
+              <TouchableOpacity style={styles.pdfButton} onPress={handleGeneratePDF}>
+                <Text style={styles.addButtonText}>PDF</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.addButton} onPress={() => setIsAdding(true)}>
+                <Text style={styles.addButtonText}>+ Adicionar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <FlatList
             data={medicamentos}
@@ -97,28 +160,3 @@ export default function TelaFarmacia({ navigation }: Props) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F9FA' },
-  scroll: { padding: 24, flexGrow: 1 },
-  listContainer: { padding: 24, flex: 1 },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  title: { fontSize: 32, fontWeight: 'bold', color: '#0056b3' },
-  addButton: { backgroundColor: '#28a745', padding: 12, borderRadius: 8 },
-  addButtonText: { color: '#fff', fontWeight: 'bold' },
-  formGroup: { marginBottom: 16 },
-  label: { fontSize: 18, fontWeight: 'bold', color: '#333', marginBottom: 8 },
-  input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#ccc', borderRadius: 12, padding: 16, fontSize: 18 },
-  saveButton: { backgroundColor: '#0056b3', borderRadius: 12, padding: 18, alignItems: 'center', marginTop: 20 },
-  saveButtonText: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
-  cancelButton: { backgroundColor: '#6c757d', borderRadius: 12, padding: 18, alignItems: 'center', marginTop: 10 },
-  cancelButtonText: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
-  card: { backgroundColor: '#fff', padding: 16, borderRadius: 12, marginBottom: 12, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', elevation: 2 },
-  cardTitle: { fontSize: 20, fontWeight: 'bold', color: '#333' },
-  cardSub: { fontSize: 16, color: '#666' },
-  estoqueBadge: { backgroundColor: '#e0f7fa', padding: 8, borderRadius: 8 },
-  estoqueText: { color: '#17a2b8', fontWeight: 'bold' },
-  empty: { textAlign: 'center', color: '#666', fontSize: 16, marginTop: 40 },
-  backButton: { backgroundColor: '#dc3545', padding: 16, borderRadius: 12, alignItems: 'center', marginTop: 20 },
-  backButtonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
-});

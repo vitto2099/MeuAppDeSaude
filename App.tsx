@@ -2,18 +2,18 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import TelaInicial from './src/telas/telaInicial';
-import TelaSinaisVitais from './src/telas/telaSinaisVitais';
-import TelaHumor from './src/telas/telaHumor';
-import TelaLembretes from './src/telas/telaLembretes';
-import TelaLogin from './src/telas/telaLogin';
-import TelaCadastro from './src/telas/telaCadastro';
-import TelaPerfil from './src/telas/telaPerfil';
-import TelaFarmacia from './src/telas/telaFarmacia';
-import TelaEnfermagem from './src/telas/telaEnfermagem';
-import TelaEducacaoFisica from './src/telas/telaEducacaoFisica';
-import TelaPsicologia from './src/telas/telaPsicologia';
-import TelaFisioterapia from './src/telas/telaFisioterapia';
+import TelaInicial from './src/telas/Inicial';
+import TelaSinaisVitais from './src/telas/SinaisVitais';
+import TelaHumor from './src/telas/Humor';
+import TelaLembretes from './src/telas/Lembretes';
+import TelaLogin from './src/telas/Login';
+import TelaCadastro from './src/telas/Cadastro';
+import TelaPerfil from './src/telas/Perfil';
+import TelaFarmacia from './src/telas/Farmacia';
+import TelaEnfermagem from './src/telas/Enfermagem';
+import TelaEducacaoFisica from './src/telas/EducacaoFisica';
+import TelaPsicologia from './src/telas/Psicologia';
+import TelaFisioterapia from './src/telas/Fisioterapia';
 
 export type RootStackParamList = {
   Login: undefined;
