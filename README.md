@@ -9,21 +9,59 @@ Um aplicativo moderno, acessível e *offline-first* desenvolvido em React Native
 - **Zustand**: Gerenciamento de estado global focado no funcionamento offline. O app foi construído de forma que os dados sejam gravados localmente para garantir rapidez e funcionamento sem internet.
 - **React Navigation**: Navegação em pilhas (Stack) com rotas modulares.
 
-## 🛠️ O que já foi implementado
+## 🛠️ O que já foi implementado (Status das Telas)
 
-O projeto já possui sua infraestrutura visual e o fluxo de dados local (banco em memória) completamente implementados. O acesso é feito pelas credenciais simuladas de administrador (`admin` / `admin`). 
+O aplicativo possui infraestrutura visual, navegação e fluxo de dados local (com persistência via AsyncStorage) completamente implementados. O acesso inicial é feito pelas credenciais simuladas de administrador (`admin` / `admin`).
 
-Os seguintes grandes módulos já estão funcionais, validados e conectados:
+Abaixo está o detalhamento de funcionamento de cada tela:
 
-1. **Dashboard Inicial (Home)**: Com botões amplos, alto contraste e rolagem responsiva para todos os tamanhos de Android.
-2. **Sinais Vitais**: Registro de BPM e Glicose com histórico exibido em tempo real.
-3. **Lembretes**: Listagem interativa com opção para adicionar novos hábitos/remédios.
-4. **Humor & Atividade Física**: Diário emocional com seleção de escala visual e cruzamento de níveis de atividade física.
-5. **Farmácia**: Inventário local de medicamentos (Nome, dosagem, forma e estoque) com validação de interações perigosas (ex: alertas para AAS).
-6. **Enfermagem**: Cadastro de Sinais Avançados (Temp, SpO2, Pressão) com alertas automáticos em caso de Febre (>37.8°C) ou Hipotermia (<35.0°C).
-7. **Educação Física**: Tela para gerenciar progressos e metas de treino na semana.
-8. **Psicologia**: Questionários embutidos e SOS (Área de crise com atalho para o CVV).
-9. **Fisioterapia**: Registro rápido do Nível de Dor (Escala EVA de 0 a 10) e evolução.
+1. **🔑 Login**
+   - **Funciona:** Formulário interativo que exige o preenchimento de e-mail/CPF e senha.
+   - **Simulação/Mock:** Credencial fixa de acesso definida como usuário `admin` e senha `admin` para permitir o acesso rápido. O link de cadastro redireciona perfeitamente para a tela correspondente.
+
+2. **📝 Cadastro**
+   - **Funciona:** Formulário completo. Possui validação que impede o cadastro caso as senhas digitadas não coincidam. Exibe um alerta de sucesso e avança para a tela de Perfil.
+
+3. **👤 Perfil**
+   - **Funciona:** Permite preencher Idade, Peso, Altura e Sexo.
+   - **Cálculo de IMC Automático:** Calcula o IMC em tempo real enquanto o usuário digita e exibe na tela o valor com a classificação de saúde (Ex: *Normal, Sobrepeso, Obesidade*). Salva e avança para a tela Inicial.
+
+4. **🏠 Inicial (Dashboard)**
+   - **Funciona:** Central do aplicativo. Exibe o nome do paciente personalizado e a foto de perfil cadastrada. Todos os 9 cartões de serviços de saúde e o ícone de configurações funcionam e redirecionam para as respectivas telas.
+
+5. **⚙️ Configurações**
+   - **Funciona:** Permite que o usuário mude o nome, telefone e escolha uma foto da galeria do celular utilizando a biblioteca nativa `expo-image-picker`. As informações atualizadas refletem imediatamente em todo o app.
+   - **Simulação/Mock:** Botão "Recuperar Senha" exibe apenas um alerta simulado de envio de e-mail.
+
+6. **😊 Humor**
+   - **Funciona:** O usuário seleciona o humor do dia (Feliz, Triste, Nervoso ou Ansioso), salva no histórico local e a tela lista todos os sentimentos registrados com a data e emoji respectivos.
+
+7. **🩸 Sinais Vitais**
+   - **Funciona:** Entrada de Batimentos por Minuto (BPM), Glicose (mg/dL) e Pressão Arterial (mmHg). Salva no histórico de registros e exibe a lista atualizada de medições recentes com data/hora.
+
+8. **⏰ Lembretes**
+   - **Funciona:** Pede permissão real de notificações do celular. Permite criar lembretes com título, categoria (*Saúde, Remédio, Exercício, Higiene*) e horário (valida formato HH:MM).
+   - **Integração Real:** Agenda notificações diárias reais no sistema operacional através do `expo-notifications` (com aviso em caso de ambiente web). Permite excluir lembretes da lista.
+
+9. **💊 Farmácia**
+   - **Funciona:** Cadastro de medicamentos contendo Nome, Dosagem, Formato e quantidade em estoque.
+   - **Alerta Inteligente:** Exibe um alerta de interação medicamentosa básica caso tente cadastrar "AAS" ou "Aspirina".
+   - **Geração de PDF Real:** O botão PDF gera um relatório completo dos seus medicamentos em formato HTML e abre o menu nativo de compartilhamento/impressão de arquivo do celular via `expo-sharing`.
+
+10. **🩺 Enfermagem**
+    - **Funciona:** Registro de Temperatura, Pressão e Oxigenação (SpO2). Avalia e alerta caso a temperatura aponte Febre (>37.8°C) ou Hipotermia (<35.0°C). Mostra histórico dos registros salvos.
+    - **⚠️ Mock (Sem ação):** Os botões "Abrir Cartão de Vacinas" e "Registro de Curativos" são apenas visuais (não executam ações quando clicados).
+
+11. **🏃 Educação Física**
+    - **Funciona:** Permite selecionar a frequência de atividades (Ativo, De vez em quando, Não pratico) e salvar no perfil. Atualiza a barra de progresso da meta semanal conforme o usuário adiciona treinos realizados. Abre um pop-up com a Biblioteca de Exercícios e suas descrições.
+
+12. **🧠 Psicologia**
+    - **Funciona:** Botão de crise SOS (exibe alerta para contato com o CVV 188 e emergências).
+    - **Questionários de Triagem Completos:** Modais interativos contendo os questionários reais PHQ-9 (Depressão) e GAD-7 (Ansiedade). O usuário responde todas as perguntas com múltipla escolha e o sistema calcula a pontuação final na hora, sugerindo buscar ajuda médica se necessário.
+
+13. **🦵 Fisioterapia**
+    - **Funciona:** Registro diário de nível de dor na escala EVA (0 a 10) com validação de entrada e exibição do histórico de evolução da dor.
+    - **⚠️ Mock (Sem ação):** Os botões "Exercícios de Hoje" e "Lembretes de Postura" no cartão Plano Terapêutico são visuais e não possuem ação programada ao clicar.
 
 ---
 
@@ -159,11 +197,10 @@ docs: atualiza instruções de instalação
 
 ## 🚧 O que ainda falta fazer (Próximos Passos)
 
-Embora 100% da arquitetura, fluxo visual e state management estejam de pé, algumas automações reais precisam ser refinadas para entregar a aplicação final:
+Para que o aplicativo saia do modo MVP/Simulação local e vá para produção:
 
-- [ ] **Integração Push Notifications**: Transformar os "Lembretes" armazenados no Zustand em alertas sonoros reais pelo celular (Notificações Nativas).
-- [ ] **Lógica de IMC e Perfil (RF03-RF04)**: Criar a tela exata de edição de Altura e Peso para o cálculo matemático automático do IMC na tela "Ver Meu IMC".
-- [ ] **Exportação de PDF (Farmácia)**: Adicionar biblioteca geradora de PDF (`expo-print`) para transformar a lista de remédios em um documento compartilhável via WhatsApp ou e-mail.
-- [ ] **Questionários (PHQ-9 / GAD-7)**: Implementar as perguntas individuais da escala dentro de uma tela modal na Psicologia para somar a nota final de triagem.
-- [ ] **Persistência Offline Real**: Mudar o estado `Zustand` simples para usar o middleware `persist` com `AsyncStorage` (para que os dados continuem salvos se a pessoa fechar o app pelo painel multitarefas).
-- [ ] **Integração Firebase**: Caso decida sincronizar os backups na nuvem (após implementar a persistência), subir o banco offline para o Firebase Firestore de forma transparente.
+- [ ] **Integração Real de Autenticação e Banco na Nuvem (Firebase)**: Configurar as credenciais reais no arquivo `firebase.ts` e alterar os fluxos de salvamento para gravar no Firestore.
+- [ ] **Implementar telas/fluxos para botões adicionais (Atualmente Mocks)**:
+  - Na tela de Enfermagem: Implementar o modal/tela do "Cartão de Vacinas" e do "Registro de Curativos".
+  - Na tela de Fisioterapia: Implementar a visualização dos "Exercícios de Hoje" e os "Lembretes de Postura".
+- [ ] **Implementação de Fluxos Avançados de Notificações**: Sincronizar lembretes agendados com push notifications configuráveis externamente.
