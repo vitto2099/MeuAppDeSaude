@@ -38,6 +38,7 @@ interface EstadoGlobal {
 
   perfil: PerfilUsuario | null;
   updatePerfil: (perfil: Partial<PerfilUsuario>) => void;
+  logout: () => void;
 }
 
 export const useStore = create<EstadoGlobal>()(
@@ -47,6 +48,16 @@ export const useStore = create<EstadoGlobal>()(
       updatePerfil: (novosDados) => set((state) => ({
         perfil: state.perfil ? { ...state.perfil, ...novosDados } : { nome: '', fotoUri: null, telefone: '', ...novosDados } as PerfilUsuario
       })),
+      logout: () => set({ 
+        perfil: null, 
+        lembretes: [], 
+        sinaisVitais: [], 
+        humorHistorico: [], 
+        medicamentos: [], 
+        sinaisEnfermagem: [], 
+        treinos: [], 
+        historicoDor: [] 
+      }),
       lembretes: [],
       addLembrete: (lembrete) => set((state) => ({
         lembretes: [...state.lembretes, { ...lembrete, id: Math.random().toString() }]

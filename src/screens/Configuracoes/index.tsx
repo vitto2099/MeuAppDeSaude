@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function TelaConfiguracoes({ navigation }: Props) {
-  const { perfil, updatePerfil } = useStore();
+  const { perfil, updatePerfil, logout } = useStore();
   
   const [nome, setNome] = useState(perfil?.nome || '');
   const [telefone, setTelefone] = useState(perfil?.telefone || '');
@@ -53,6 +53,14 @@ export default function TelaConfiguracoes({ navigation }: Props) {
       'Um e-mail com as instruções para redefinição de senha foi enviado para o seu endereço cadastrado.',
       [{ text: 'Entendi' }]
     );
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
   };
 
   return (
@@ -98,6 +106,10 @@ export default function TelaConfiguracoes({ navigation }: Props) {
 
         <TouchableOpacity style={styles.recoverButton} onPress={handleRecoverPassword}>
           <Text style={styles.recoverButtonText}>Recuperar Senha</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Sair do Aplicativo</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>

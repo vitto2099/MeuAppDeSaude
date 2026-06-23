@@ -1,7 +1,9 @@
-﻿import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Image } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../../navigation/AppNavigator';
+import { useStore } from '../../store/useStore';
 import { styles } from './styles';
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Cadastro'>;
@@ -11,17 +13,26 @@ interface Props {
 }
 
 export default function RegisterScreen({ navigation }: Props) {
+  const { updatePerfil } = useStore();
   const [emailOrCpf, setEmailOrCpf] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = () => {
+    if (!emailOrCpf || !phone || !password || !confirmPassword) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       Alert.alert('Erro', 'As senhas não coincidem.');
       return;
     }
-    // Simulate registration
+
+    // Salva os dados de perfil
+    updatePerfil({ telefone: phone });
+
     Alert.alert('Sucesso', 'Cadastro realizado!', [
       { text: 'OK', onPress: () => navigation.navigate('Perfil') }
     ]);
@@ -29,7 +40,19 @@ export default function RegisterScreen({ navigation }: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <TouchableOpacity 
+        style={{ position: 'absolute', top: 50, left: 20, zIndex: 10, padding: 10 }} 
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={28} color="#333" />
+      </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={{ alignItems: 'center', marginBottom: 16 }}>
+          <Image 
+            source={require('../../../assets/logo.png')} 
+            style={{ width: 100, height: 100, resizeMode: 'contain' }} 
+          />
+        </View>
         <Text style={styles.title}>Criar Conta</Text>
         <Text style={styles.subtitle}>Preencha seus dados para começar.</Text>
 

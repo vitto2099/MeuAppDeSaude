@@ -67,13 +67,13 @@ export default function TelaInicial({ navigation }: Props) {
           </TouchableOpacity>
 
           <TouchableOpacity 
-            style={[styles.card, { backgroundColor: '#17a2b8' }]} 
+            style={[styles.card, { backgroundColor: '#ffc107' }]} 
             onPress={() => navigation.navigate('Perfil')}
             activeOpacity={0.8}
           >
-            <MaterialCommunityIcons name="run" size={54} color="#fff" style={styles.icon} />
-            <Text style={styles.cardText}>Corpo & Movimento</Text>
-            <Text style={styles.courseTag}>Educação Física & Fisioterapia</Text>
+            <MaterialCommunityIcons name="run" size={54} color="#333" style={[styles.icon, { color: '#333' }]} />
+            <Text style={[styles.cardText, { color: '#333' }]}>Corpo & Movimento</Text>
+            <Text style={[styles.courseTag, { color: 'rgba(51, 51, 51, 0.7)' }]}>Educação Física & Fisioterapia</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
