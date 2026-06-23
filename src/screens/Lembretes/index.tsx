@@ -40,7 +40,7 @@ export default function TelaLembretes({ navigation }: Props) {
   const [title, setTitle] = useState('');
   const [time, setTime] = useState('');
   const [type, setType] = useState('Saúde');
-  
+
   // Farmacia State
   const [medModalVisible, setMedModalVisible] = useState(false);
   const [nomeMed, setNomeMed] = useState('');
@@ -80,7 +80,7 @@ export default function TelaLembretes({ navigation }: Props) {
     const [hourStr, minuteStr] = time.split(':');
     const hour = parseInt(hourStr, 10);
     const minute = parseInt(minuteStr, 10);
-    
+
     const selectedCategory = categories.find(c => c.name === type) || categories[0];
 
     const novoLembrete = {
@@ -89,7 +89,7 @@ export default function TelaLembretes({ navigation }: Props) {
       time,
       color: selectedCategory.color
     };
-    
+
     addLembrete(novoLembrete);
 
     try {
@@ -195,7 +195,7 @@ export default function TelaLembretes({ navigation }: Props) {
     <View style={styles.reminderCard}>
       <View style={[styles.colorBar, { backgroundColor: item.color }]} />
       <View style={styles.reminderContent}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Text style={styles.reminderTitle}>{item.title}</Text>
           <Text style={styles.reminderType}>{item.type}</Text>
         </View>
@@ -216,14 +216,14 @@ export default function TelaLembretes({ navigation }: Props) {
       </View>
 
       <View style={styles.tabContainer}>
-        <TouchableOpacity 
-          style={[styles.tab, activeTab === 'lembretes' && styles.tabActive]} 
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'lembretes' && styles.tabActive]}
           onPress={() => setActiveTab('lembretes')}
         >
           <Text style={[styles.tabText, activeTab === 'lembretes' && styles.tabTextActive]}>Alarmes</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.tab, activeTab === 'farmacia' && styles.tabActive]} 
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'farmacia' && styles.tabActive]}
           onPress={() => setActiveTab('farmacia')}
         >
           <Text style={[styles.tabText, activeTab === 'farmacia' && styles.tabTextActive]}>Estoque Médico</Text>
@@ -284,33 +284,33 @@ export default function TelaLembretes({ navigation }: Props) {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Novo Lembrete</Text>
-            
+
             <Text style={styles.label}>Título</Text>
-            <TextInput placeholderTextColor="#999" 
-              style={styles.input} 
-              placeholder="Ex: Tomar Losartana" 
-              value={title} 
-              onChangeText={setTitle} 
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Ex: Tomar Losartana"
+              value={title}
+              onChangeText={setTitle}
             />
 
             <Text style={styles.label}>Horário (HH:MM)</Text>
-            <TextInput placeholderTextColor="#999" 
-              style={styles.input} 
-              placeholder="Ex: 08:30" 
-              value={time} 
-              onChangeText={setTime} 
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Ex: 08:30"
+              value={time}
+              onChangeText={setTime}
               keyboardType="numbers-and-punctuation"
             />
 
             <Text style={styles.label}>Categoria</Text>
             <View style={styles.categoryContainer}>
               {categories.map(c => (
-                <TouchableOpacity 
-                  key={c.name} 
-                  style={[styles.categoryBtn, type === c.name && {borderColor: c.color, backgroundColor: c.color + '20'}]}
+                <TouchableOpacity
+                  key={c.name}
+                  style={[styles.categoryBtn, type === c.name && { borderColor: c.color, backgroundColor: c.color + '20' }]}
                   onPress={() => setType(c.name)}
                 >
-                  <Text style={[styles.categoryText, type === c.name && {color: c.color, fontWeight: 'bold'}]}>{c.name}</Text>
+                  <Text style={[styles.categoryText, type === c.name && { color: c.color, fontWeight: 'bold' }]}>{c.name}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -318,7 +318,7 @@ export default function TelaLembretes({ navigation }: Props) {
             <TouchableOpacity style={styles.saveModalBtn} onPress={handleSaveNovo}>
               <Text style={styles.saveModalText}>Agendar Lembrete</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity style={styles.cancelModalBtn} onPress={() => setModalVisible(false)}>
               <Text style={styles.cancelModalText}>Cancelar</Text>
             </TouchableOpacity>
@@ -331,44 +331,44 @@ export default function TelaLembretes({ navigation }: Props) {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Novo Medicamento</Text>
-            
+
             <Text style={styles.label}>Nome</Text>
-            <TextInput placeholderTextColor="#999" 
-              style={styles.input} 
-              placeholder="Ex: Losartana" 
-              value={nomeMed} 
-              onChangeText={setNomeMed} 
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Ex: Losartana"
+              value={nomeMed}
+              onChangeText={setNomeMed}
             />
 
             <Text style={styles.label}>Dosagem</Text>
-            <TextInput placeholderTextColor="#999" 
-              style={styles.input} 
-              placeholder="Ex: 50mg" 
-              value={dosagemMed} 
-              onChangeText={setDosagemMed} 
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Ex: 50mg"
+              value={dosagemMed}
+              onChangeText={setDosagemMed}
             />
-            
+
             <Text style={styles.label}>Formato</Text>
-            <TextInput placeholderTextColor="#999" 
-              style={styles.input} 
-              placeholder="Ex: Comprimido" 
-              value={formaMed} 
-              onChangeText={setFormaMed} 
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Ex: Comprimido"
+              value={formaMed}
+              onChangeText={setFormaMed}
             />
-            
+
             <Text style={styles.label}>Estoque</Text>
-            <TextInput placeholderTextColor="#999" 
-              style={styles.input} 
-              placeholder="Ex: 30" 
-              value={estoqueMed} 
-              onChangeText={setEstoqueMed} 
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Ex: 30"
+              value={estoqueMed}
+              onChangeText={setEstoqueMed}
               keyboardType="numeric"
             />
 
             <TouchableOpacity style={styles.saveModalBtn} onPress={handleSaveMed}>
               <Text style={styles.saveModalText}>Salvar Medicamento</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity style={styles.cancelModalBtn} onPress={() => setMedModalVisible(false)}>
               <Text style={styles.cancelModalText}>Cancelar</Text>
             </TouchableOpacity>
