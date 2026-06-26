@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Alert, TextInput } from 'react-native';
+import {  View, Text, SafeAreaView, ScrollView, TouchableOpacity, Alert, TextInput , ImageBackground } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { useStore } from '../../store/useStore';
@@ -29,7 +29,8 @@ export default function TelaFisioterapia({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_fisioterapia.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <Text style={styles.title}>Fisioterapia</Text>
         <Text style={styles.subtitle}>Gerencie suas dores e exercícios terapêuticos.</Text>
@@ -77,6 +78,7 @@ export default function TelaFisioterapia({ navigation }: Props) {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

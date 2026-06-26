@@ -27,12 +27,12 @@
 > [!TIP]
 > ## 💊 Farmácia (RF15–RF21)
 
-- ❌ **RF15:** Cadastro de medicamentos em uso: nome, dosagem, forma farmacêutica (comprimido, xarope, injeção, etc.) e prescritor
-- ❌ **RF17:** Controle de estoque domiciliar: quantidade em casa, data de vencimento, alerta quando o estoque está baixo ou o medicamento vai vencer
+- ✅ **RF15:** Cadastro de medicamentos em uso: nome, dosagem, forma farmacêutica (comprimido, xarope, injeção, etc.) e prescritor
+- ⚠️ **RF17:** Controle de estoque domiciliar: quantidade em casa, data de vencimento, alerta quando o estoque está baixo ou o medicamento vai vencer
 - ❌ **RF18:** Registro de adesão ao tratamento: o paciente confirma se tomou o medicamento no horário programado (sim / não / tomei depois)
 - ❌ **RF19:** Orientações de armazenamento do medicamento (temperatura, luz, umidade) exibidas no cadastro
 - ❌ **RF20:** Histórico de medicamentos anteriores (já descontinuados) com data de início e término
-- ❌ **RF21:** Exportação do relatório de medicamentos em PDF para levar a consultas ou à farmácia
+- ✅ **RF21:** Exportação do relatório de medicamentos em PDF para levar a consultas ou à farmácia
 
 ---
 
@@ -53,7 +53,7 @@
 - ❌ **RF29:** Diário de treinos: o paciente registra tipo de exercício, duração, intensidade (leve, moderado, intenso) e como se sentiu
 - ❌ **RF30:** Meta semanal de atividade física com progresso visual (ex: 3 de 5 treinos realizados)
 - ❌ **RF31:** Cálculo estimado de gasto calórico com base em peso, tipo de atividade e duração
-- ❌ **RF32:** Biblioteca de exercícios adaptados por condição de saúde (hipertenso, diabético, gestante) com instruções em texto e/ou vídeo
+- ✅ **RF32:** Biblioteca de exercícios adaptados por condição de saúde (hipertenso, diabético, gestante) com instruções em texto e/ou vídeo
 - ❌ **RF33:** Registro de histórico de peso e IMC ao longo do tempo com gráfico de evolução
 
 ---
@@ -64,8 +64,8 @@
 - ✅ **RF36:** Diário emocional: registro diário de humor expandido (escalas de ansiedade, estresse, bem-estar) com campo de texto livre opcional
 - ❌ **RF37:** Gráfico de evolução emocional ao longo das semanas para identificar padrões (ex: sempre ansioso às segundas)
 - ❌ **RF38:** Técnicas de regulação emocional acessíveis no app: respiração guiada, grounding 5-4-3-2-1, relaxamento muscular progressivo
-- ❌ **RF40:** Área de crise: botão de acesso rápido a recursos de saúde mental (CVV, CAPS) e contato de emergência cadastrado pelo paciente
-- ❌ **RF41:** Questionários validados de triagem: PHQ-9 (depressão), GAD-7 (ansiedade) — com resultado orientativo e recomendação de buscar profissional
+- ✅ **RF40:** Área de crise: botão de acesso rápido a recursos de saúde mental (CVV, CAPS) e contato de emergência cadastrado pelo paciente
+- ✅ **RF41:** Questionários validados de triagem: PHQ-9 (depressão), GAD-7 (ansiedade) — com resultado orientativo e recomendação de buscar profissional
 - ❌ **RF42:** Lembrete de autocuidado: meditação, hobbies, tempo de descanso — configurável pelo usuário
 
 ---

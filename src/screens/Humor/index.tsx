@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert } from 'react-native';
+import {  View, Text, TouchableOpacity, SafeAreaView, ScrollView, Alert , ImageBackground } from 'react-native';
 import { useStore } from '../../store/useStore';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
@@ -74,7 +74,8 @@ export default function MoodScreen({ navigation }: Props) {
   ].sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_humor.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         
         <View style={styles.header}>
@@ -210,6 +211,7 @@ export default function MoodScreen({ navigation }: Props) {
 
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

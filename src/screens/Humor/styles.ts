@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFC',
+    backgroundColor: 'transparent',
   },
   scroll: {
     padding: 24,
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
   },
   moodCard: {
     width: '47%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 24,
     paddingVertical: 24,
     paddingHorizontal: 16,
@@ -139,7 +139,7 @@ export const styles = StyleSheet.create({
   historyCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     padding: 16,
     borderRadius: 16,
     marginBottom: 12,

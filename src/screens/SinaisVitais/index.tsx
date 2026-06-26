@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, FlatList, Platform } from 'react-native';
+import {  View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, FlatList, Platform, Animated , ImageBackground } from 'react-native';
 import { useStore } from '../../store/useStore';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { styles } from './styles';
 import * as Notifications from 'expo-notifications';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 // Configure notification behavior for foreground alerts
 Notifications.setNotificationHandler({
@@ -84,127 +85,54 @@ const VITALS_CONFIG: Record<string, VitalLimit> = {
   }
 };
 
-// Componente de Roda de Rolagem Vertical (Vertical Wheel Picker)
-const VerticalWheelPicker = ({ min, max, value, onChange }: {
-  min: number;
-  max: number;
-  value: string;
-  onChange: (val: string) => void;
-}) => {
-  const numbers = useMemo(() => {
-    const arr = [];
-    for (let i = min; i <= max; i++) {
-      arr.push(i);
-    }
-    return arr;
-  }, [min, max]);
-
-  const flatListRef = useRef<FlatList>(null);
-  const isUserScrolling = useRef(false);
-
-  // Sincroniza a roda vertical quando o valor muda externamente (ex: digitação)
-  useEffect(() => {
-    if (isUserScrolling.current) return;
-    const num = parseInt(value, 10);
-    if (!isNaN(num) && num >= min && num <= max) {
-      const index = num - min;
-      const timer = setTimeout(() => {
-        flatListRef.current?.scrollToOffset({
-          offset: index * 40,
-          animated: true,
-        });
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [value, min, max]);
-
-  const handleScroll = (event: any) => {
-    const y = event.nativeEvent.contentOffset.y;
-    const index = Math.round(y / 40);
-    if (index >= 0 && index < numbers.length) {
-      const selectedValue = numbers[index].toString();
-      if (value !== selectedValue) {
-        onChange(selectedValue);
-      }
+const NumericStepperInput = ({ value, onChangeText, placeholder, focused, onFocus, onBlur, min, max, step = 1, maxLength }: any) => {
+  const handleIncrement = () => {
+    const current = parseInt(value, 10) || 0;
+    if (current + step <= max) {
+      onChangeText((current + step).toString());
+    } else {
+      onChangeText(max.toString());
     }
   };
 
-  const renderItem = ({ item }: { item: number }) => {
-    const selectedNum = parseInt(value, 10);
-    const itemIndex = item - min;
-    const selectedIndex = isNaN(selectedNum) ? -999 : selectedNum - min;
-    const distance = Math.abs(itemIndex - selectedIndex);
-
-    let opacity = 0.2;
-    let scale = 0.8;
-    
-    if (distance === 0) {
-      opacity = 1;
-      scale = 1.15;
-    } else if (distance === 1) {
-      opacity = 0.5;
-      scale = 0.95;
-    } else if (distance === 2) {
-      opacity = 0.25;
-      scale = 0.85;
+  const handleDecrement = () => {
+    const current = parseInt(value, 10) || 0;
+    if (current - step >= min) {
+      onChangeText((current - step).toString());
+    } else {
+      onChangeText(min.toString());
     }
-
-    const isSelected = distance === 0;
-
-    return (
-      <View style={[styles.rulerItem, { opacity, transform: [{ scale }] }]}>
-        <Text style={[styles.rulerText, isSelected && styles.rulerTextSelected]}>
-          {item}
-        </Text>
-      </View>
-    );
   };
 
   return (
-    <View style={styles.rulerWrapper}>
-      <View style={styles.pickerIndicator} pointerEvents="none" />
-      <FlatList
-        ref={flatListRef}
-        data={numbers}
-        extraData={value}
-        keyExtractor={(item) => item.toString()}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.rulerContent}
-        snapToInterval={40}
-        decelerationRate="fast"
-        getItemLayout={(data, index) => ({
-          length: 40,
-          offset: 40 * index,
-          index,
-        })}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        onScrollBeginDrag={() => {
-          isUserScrolling.current = true;
-        }}
-        onScrollEndDrag={(e) => {
-          isUserScrolling.current = false;
-          const y = e.nativeEvent.contentOffset.y;
-          const index = Math.round(y / 40);
-          flatListRef.current?.scrollToOffset({
-            offset: index * 40,
-            animated: true,
-          });
-        }}
-        onMomentumScrollBegin={() => {
-          isUserScrolling.current = true;
-        }}
-        onMomentumScrollEnd={(e) => {
-          isUserScrolling.current = false;
-          const y = e.nativeEvent.contentOffset.y;
-          const index = Math.round(y / 40);
-          flatListRef.current?.scrollToOffset({
-            offset: index * 40,
-            animated: true,
-          });
-        }}
+    <View style={[styles.input, focused && styles.inputFocused, { flexDirection: 'row', alignItems: 'center', padding: 0, overflow: 'hidden' }]}>
+      <TextInput
+        style={{ flex: 1, padding: 16, fontSize: 18, color: '#1A1A24', fontWeight: '600' }}
+        placeholderTextColor="#A0A0AB"
+        placeholder={placeholder}
+        keyboardType="numeric"
+        value={value}
+        onChangeText={onChangeText}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        maxLength={maxLength}
       />
+      <View style={{ width: 48, borderLeftWidth: 1.5, borderLeftColor: focused ? '#E63946' : '#E0E0E5' }}>
+        <TouchableOpacity 
+          onPress={handleIncrement} 
+          activeOpacity={0.7}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderBottomWidth: 1.5, borderBottomColor: focused ? '#E63946' : '#E0E0E5', minHeight: 28, backgroundColor: '#F8F9FA' }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: focused ? '#E63946' : '#6B7280', marginTop: -2 }}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={handleDecrement} 
+          activeOpacity={0.7}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', minHeight: 28, backgroundColor: '#F8F9FA' }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: focused ? '#E63946' : '#6B7280', marginTop: -2 }}>−</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -220,6 +148,37 @@ export default function TelaSinaisVitais({ navigation }: Props) {
   const [exercicio, setExercicio] = useState<boolean | null>(null);
   
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
+
+  const [showReminderPicker, setShowReminderPicker] = useState(false);
+  const [reminderDate, setReminderDate] = useState(new Date());
+
+  const handleScheduleReminder = async (event: any, selectedDate?: Date) => {
+    setShowReminderPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setReminderDate(selectedDate);
+      
+      const hours = selectedDate.getHours();
+      const minutes = selectedDate.getMinutes();
+
+      try {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "🩺 Hora de medir seus sinais vitais",
+            body: "Acesse o app para registrar seus sinais vitais do dia.",
+            sound: true,
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DAILY,
+            hour: hours,
+            minute: minutes,
+          },
+        });
+        Alert.alert('Sucesso', `Lembrete diário de sinais vitais programado para ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}!`);
+      } catch (err) {
+        Alert.alert('Erro', 'Não foi possível agendar o lembrete.');
+      }
+    }
+  };
 
   const addSinalVital = useStore((state) => state.addSinalVital);
   const historico = useStore((state) => state.sinaisVitais);
@@ -540,7 +499,8 @@ export default function TelaSinaisVitais({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_sinais_vitais.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <ScrollView 
         contentContainerStyle={styles.scroll} 
         showsVerticalScrollIndicator={false}
@@ -562,25 +522,18 @@ export default function TelaSinaisVitais({ navigation }: Props) {
                 Batimentos Cardíacos {bpm ? `(${bpm} bpm)` : ''}
               </Text>
             </View>
-            <TextInput 
-              placeholderTextColor="#A0A0AB"
-              style={[styles.input, focusedInput === 'bpm' && styles.inputFocused]}
+            <NumericStepperInput 
               placeholder="Ex: 75"
-              keyboardType="numeric"
               value={bpm}
-              onChangeText={(text) => handleInputChange(text, 'bpm')}
+              onChangeText={(text: string) => handleInputChange(text, 'bpm')}
+              focused={focusedInput === 'bpm'}
               onFocus={() => setFocusedInput('bpm')}
               onBlur={() => handleBlur('bpm', bpm)}
               maxLength={3}
+              min={VITALS_CONFIG.bpm.min}
+              max={VITALS_CONFIG.bpm.max}
+              step={1}
             />
-            {focusedInput === 'bpm' && (
-              <VerticalWheelPicker
-                min={VITALS_CONFIG.bpm.min}
-                max={VITALS_CONFIG.bpm.max}
-                value={bpm}
-                onChange={(val) => handleInputChange(val, 'bpm')}
-              />
-            )}
           </View>
 
           {/* Glicose */}
@@ -593,25 +546,18 @@ export default function TelaSinaisVitais({ navigation }: Props) {
                 Glicemia {glucose ? `(${glucose} mg/dL)` : ''}
               </Text>
             </View>
-            <TextInput 
-              placeholderTextColor="#A0A0AB"
-              style={[styles.input, focusedInput === 'glicose' && styles.inputFocused]}
+            <NumericStepperInput 
               placeholder="Ex: 90"
-              keyboardType="numeric"
               value={glucose}
-              onChangeText={(text) => handleInputChange(text, 'glicose')}
+              onChangeText={(text: string) => handleInputChange(text, 'glicose')}
+              focused={focusedInput === 'glicose'}
               onFocus={() => setFocusedInput('glicose')}
               onBlur={() => handleBlur('glicose', glucose)}
               maxLength={3}
+              min={VITALS_CONFIG.glicose.min}
+              max={VITALS_CONFIG.glicose.max}
+              step={1}
             />
-            {focusedInput === 'glicose' && (
-              <VerticalWheelPicker
-                min={VITALS_CONFIG.glicose.min}
-                max={VITALS_CONFIG.glicose.max}
-                value={glucose}
-                onChange={(val) => handleInputChange(val, 'glicose')}
-              />
-            )}
             {glucose.length > 0 && (
               <View style={{ marginTop: 8 }}>
                 <Text style={[styles.label, { fontSize: 14, color: glicoseTipo ? '#3B82F6' : '#EF4444' }]}>
@@ -654,49 +600,35 @@ export default function TelaSinaisVitais({ navigation }: Props) {
             <View style={styles.rowInputs}>
               <View style={styles.rowInputContainer}>
                 <Text style={[styles.label, { fontSize: 13, marginBottom: 4, color: '#6B7280' }]}>Sistólica</Text>
-                <TextInput 
-                  placeholderTextColor="#A0A0AB"
-                  style={[styles.input, focusedInput === 'pressaoSistolica' && styles.inputFocused]}
+                <NumericStepperInput 
                   placeholder="Ex: 120"
-                  keyboardType="numeric"
                   value={pressaoSistolica}
-                  onChangeText={(text) => handleInputChange(text, 'pressaoSistolica')}
+                  onChangeText={(text: string) => handleInputChange(text, 'pressaoSistolica')}
+                  focused={focusedInput === 'pressaoSistolica'}
                   onFocus={() => setFocusedInput('pressaoSistolica')}
                   onBlur={() => handleBlur('pressaoSistolica', pressaoSistolica)}
                   maxLength={3}
+                  min={VITALS_CONFIG.pressaoSistolica.min}
+                  max={VITALS_CONFIG.pressaoSistolica.max}
+                  step={1}
                 />
               </View>
               <View style={styles.rowInputContainer}>
                 <Text style={[styles.label, { fontSize: 13, marginBottom: 4, color: '#6B7280' }]}>Diastólica</Text>
-                <TextInput 
-                  placeholderTextColor="#A0A0AB"
-                  style={[styles.input, focusedInput === 'pressaoDiastolica' && styles.inputFocused]}
+                <NumericStepperInput 
                   placeholder="Ex: 80"
-                  keyboardType="numeric"
                   value={pressaoDiastolica}
-                  onChangeText={(text) => handleInputChange(text, 'pressaoDiastolica')}
+                  onChangeText={(text: string) => handleInputChange(text, 'pressaoDiastolica')}
+                  focused={focusedInput === 'pressaoDiastolica'}
                   onFocus={() => setFocusedInput('pressaoDiastolica')}
                   onBlur={() => handleBlur('pressaoDiastolica', pressaoDiastolica)}
                   maxLength={3}
+                  min={VITALS_CONFIG.pressaoDiastolica.min}
+                  max={VITALS_CONFIG.pressaoDiastolica.max}
+                  step={1}
                 />
               </View>
             </View>
-            {focusedInput === 'pressaoSistolica' && (
-              <VerticalWheelPicker
-                min={VITALS_CONFIG.pressaoSistolica.min}
-                max={VITALS_CONFIG.pressaoSistolica.max}
-                value={pressaoSistolica}
-                onChange={(val) => handleInputChange(val, 'pressaoSistolica')}
-              />
-            )}
-            {focusedInput === 'pressaoDiastolica' && (
-              <VerticalWheelPicker
-                min={VITALS_CONFIG.pressaoDiastolica.min}
-                max={VITALS_CONFIG.pressaoDiastolica.max}
-                value={pressaoDiastolica}
-                onChange={(val) => handleInputChange(val, 'pressaoDiastolica')}
-              />
-            )}
           </View>
           
           {/* Oxigenacao */}
@@ -709,25 +641,18 @@ export default function TelaSinaisVitais({ navigation }: Props) {
                 Saturação de Oxigênio {oxigenacao ? `(${oxigenacao}%)` : ''}
               </Text>
             </View>
-            <TextInput 
-              placeholderTextColor="#A0A0AB"
-              style={[styles.input, focusedInput === 'oxigenacao' && styles.inputFocused]}
+            <NumericStepperInput 
               placeholder="Ex: 98"
-              keyboardType="numeric"
               value={oxigenacao}
-              onChangeText={(text) => handleInputChange(text, 'oxigenacao')}
+              onChangeText={(text: string) => handleInputChange(text, 'oxigenacao')}
+              focused={focusedInput === 'oxigenacao'}
               onFocus={() => setFocusedInput('oxigenacao')}
               onBlur={() => handleBlur('oxigenacao', oxigenacao)}
               maxLength={3}
+              min={VITALS_CONFIG.oxigenacao.min}
+              max={VITALS_CONFIG.oxigenacao.max}
+              step={1}
             />
-            {focusedInput === 'oxigenacao' && (
-              <VerticalWheelPicker
-                min={VITALS_CONFIG.oxigenacao.min}
-                max={VITALS_CONFIG.oxigenacao.max}
-                value={oxigenacao}
-                onChange={(val) => handleInputChange(val, 'oxigenacao')}
-              />
-            )}
           </View>
 
           {/* Mood */}
@@ -781,6 +706,26 @@ export default function TelaSinaisVitais({ navigation }: Props) {
             Registrar Sinais Vitais
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={[styles.saveButton, { backgroundColor: '#8B5CF6', marginTop: 12 }]} 
+          onPress={() => setShowReminderPicker(true)}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.saveButtonText}>
+            ⏰ Criar Lembrete de Medição
+          </Text>
+        </TouchableOpacity>
+
+        {showReminderPicker && (
+          <DateTimePicker
+            value={reminderDate}
+            mode="time"
+            is24Hour={true}
+            display="default"
+            onChange={handleScheduleReminder}
+          />
+        )}
 
         {/* History */}
         <View style={styles.historyContainer}>
@@ -847,5 +792,6 @@ export default function TelaSinaisVitais({ navigation }: Props) {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }

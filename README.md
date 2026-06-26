@@ -9,6 +9,16 @@ Um aplicativo moderno, acessível e *offline-first* desenvolvido em React Native
 - **Zustand**: Gerenciamento de estado global focado no funcionamento offline. O app foi construído de forma que os dados sejam gravados localmente para garantir rapidez e funcionamento sem internet.
 - **React Navigation**: Navegação em pilhas (Stack) com rotas modulares.
 
+### 🏗️ Nova Arquitetura Planejada (Backend e Banco de Dados)
+
+O backend do sistema será estruturado utilizando uma arquitetura baseada em **cinco monólitos independentes**. A comunicação ocorrerá via APIs REST em Node.js e cada monólito terá seu próprio banco de dados SQLite para isolar domínios e garantir alta manutenibilidade. A autenticação será gerenciada pelo Firebase.
+
+1. **Saúde Mental:** Gerenciamento do diário emocional, questionários de triagem (PHQ-9 e GAD-7) e contatos de crise.
+2. **Lembretes:** Organização de rotina de medicamentos, agendamento de consultas, estoque e adesão ao tratamento.
+3. **Sinais Vitais:** Armazenamento e geração de alertas para frequência cardíaca, pressão arterial, temperatura, SpO2 e glicemia.
+4. **Corpo e Movimento:** Histórico corporal, exercícios, escala de dor, mobilidade e IMC.
+5. **Administração:** Receberá exclusivamente dados anonimizados dos demais monólitos para consolidação de estatísticas, dashboards gerenciais e indicadores em conformidade com a LGPD.
+
 ## 🛠️ O que já foi implementado (Status das Telas)
 
 O aplicativo possui infraestrutura visual, navegação e fluxo de dados local (com persistência via AsyncStorage) completamente implementados. O acesso inicial é feito pelas credenciais simuladas de administrador (`admin` / `admin`).

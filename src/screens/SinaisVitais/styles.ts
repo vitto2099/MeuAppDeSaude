@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFC',
+    backgroundColor: 'transparent',
   },
   scroll: {
     padding: 24,
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 24,
     padding: 24,
     marginBottom: 24,
@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     color: '#4A4A5C',
   },
   input: {
-    backgroundColor: '#F8F9FA',
+    backgroundColor: 'transparent',
     borderWidth: 1.5,
     borderColor: '#E0E0E5',
     borderRadius: 16,
@@ -175,7 +175,7 @@ export const styles = StyleSheet.create({
     letterSpacing: -0.3,
   },
   historyCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
@@ -248,7 +248,7 @@ export const styles = StyleSheet.create({
   },
   rulerWrapper: {
     height: 120,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: 'transparent',
     borderRadius: 16,
     marginTop: 8,
     marginBottom: 8,
@@ -303,7 +303,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1.5,
     borderColor: '#E0E0E5',
-    backgroundColor: '#F8F9FA',
+    backgroundColor: 'transparent',
     alignItems: 'center',
   },
   glicoseChipSelected: {

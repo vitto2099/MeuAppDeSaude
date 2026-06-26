@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, Alert, Image } from 'react-native';
+import {  View, Text, TextInput, TouchableOpacity, SafeAreaView, KeyboardAvoidingView, Platform, Alert, Image , ImageBackground } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
@@ -53,7 +53,8 @@ export default function LoginScreen({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_login.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
         style={styles.keyboardView}
@@ -116,6 +117,7 @@ export default function LoginScreen({ navigation }: Props) {
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

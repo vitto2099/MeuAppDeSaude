@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Image } from 'react-native';
+import {  View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Image , ImageBackground } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from '../../navigation/AppNavigator';
@@ -39,7 +39,8 @@ export default function RegisterScreen({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_cadastro.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <TouchableOpacity 
         style={{ position: 'absolute', top: 50, left: 20, zIndex: 10, padding: 10 }} 
         onPress={() => navigation.goBack()}
@@ -47,68 +48,71 @@ export default function RegisterScreen({ navigation }: Props) {
         <Ionicons name="arrow-back" size={28} color="#333" />
       </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <View style={{ alignItems: 'center', marginBottom: 16 }}>
-          <Image 
-            source={require('../../../assets/logo.png')} 
-            style={{ width: 100, height: 100, resizeMode: 'contain' }} 
-          />
+        <View style={styles.content}>
+          <View style={{ alignItems: 'center', marginBottom: 16 }}>
+            <Image 
+              source={require('../../../assets/logo.png')} 
+              style={{ width: 100, height: 100, resizeMode: 'contain' }} 
+            />
+          </View>
+          <Text style={styles.title}>Criar Conta</Text>
+          <Text style={styles.subtitle}>Preencha seus dados para começar.</Text>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>E-mail ou CPF</Text>
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Seu e-mail ou CPF"
+              value={emailOrCpf}
+              onChangeText={setEmailOrCpf}
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Telefone</Text>
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="(11) 99999-9999"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+            />
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Senha</Text>
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Crie uma senha"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Confirmar Senha</Text>
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Repita a senha"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+            />
+          </View>
+
+          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+            <Text style={styles.registerButtonText}>Cadastrar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.backLink} onPress={() => navigation.goBack()}>
+            <Text style={styles.backLinkText}>Já tem uma conta? <Text style={styles.boldText}>Faça Login</Text></Text>
+          </TouchableOpacity>
         </View>
-        <Text style={styles.title}>Criar Conta</Text>
-        <Text style={styles.subtitle}>Preencha seus dados para começar.</Text>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>E-mail ou CPF</Text>
-          <TextInput placeholderTextColor="#999"
-            style={styles.input}
-            placeholder="Seu e-mail ou CPF"
-            value={emailOrCpf}
-            onChangeText={setEmailOrCpf}
-            autoCapitalize="none"
-          />
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Telefone</Text>
-          <TextInput placeholderTextColor="#999"
-            style={styles.input}
-            placeholder="(11) 99999-9999"
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Senha</Text>
-          <TextInput placeholderTextColor="#999"
-            style={styles.input}
-            placeholder="Crie uma senha"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Confirmar Senha</Text>
-          <TextInput placeholderTextColor="#999"
-            style={styles.input}
-            placeholder="Repita a senha"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-          />
-        </View>
-
-        <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-          <Text style={styles.registerButtonText}>Cadastrar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.backLink} onPress={() => navigation.goBack()}>
-          <Text style={styles.backLinkText}>Já tem uma conta? <Text style={styles.boldText}>Faça Login</Text></Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

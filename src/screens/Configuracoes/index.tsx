@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Image } from 'react-native';
+import {  View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Image , ImageBackground } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -64,59 +64,63 @@ export default function TelaConfiguracoes({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_configuracoes.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
-        <Text style={styles.title}>Configurações</Text>
+        <View style={styles.content}>
+          <Text style={styles.title}>Configurações</Text>
 
-        <TouchableOpacity style={styles.photoContainer} onPress={handlePickImage}>
-          {fotoUri ? (
-            <Image source={{ uri: fotoUri }} style={styles.photo} />
-          ) : (
-            <View style={styles.photoPlaceholder}>
-              <Ionicons name="camera" size={40} color="#999" />
-            </View>
-          )}
-          <Text style={styles.changePhotoText}>Alterar Foto</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.photoContainer} onPress={handlePickImage}>
+            {fotoUri ? (
+              <Image source={{ uri: fotoUri }} style={styles.photo} />
+            ) : (
+              <View style={styles.photoPlaceholder}>
+                <Ionicons name="camera" size={40} color="#999" />
+              </View>
+            )}
+            <Text style={styles.changePhotoText}>Alterar Foto</Text>
+          </TouchableOpacity>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Nome</Text>
-          <TextInput placeholderTextColor="#999"
-            style={styles.input}
-            placeholder="Seu nome completo"
-            value={nome}
-            onChangeText={setNome}
-          />
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Nome</Text>
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="Seu nome completo"
+              value={nome}
+              onChangeText={setNome}
+            />
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Telefone</Text>
+            <TextInput placeholderTextColor="#999"
+              style={styles.input}
+              placeholder="(11) 99999-9999"
+              value={telefone}
+              onChangeText={setTelefone}
+              keyboardType="phone-pad"
+            />
+          </View>
+
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Salvar Alterações</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.recoverButton} onPress={handleRecoverPassword}>
+            <Text style={styles.recoverButtonText}>Recuperar Senha</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Text style={styles.logoutButtonText}>Sair do Aplicativo</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Text style={styles.backButtonText}>Voltar</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Telefone</Text>
-          <TextInput placeholderTextColor="#999"
-            style={styles.input}
-            placeholder="(11) 99999-9999"
-            value={telefone}
-            onChangeText={setTelefone}
-            keyboardType="phone-pad"
-          />
-        </View>
-
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Salvar Alterações</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.recoverButton} onPress={handleRecoverPassword}>
-          <Text style={styles.recoverButtonText}>Recuperar Senha</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Sair do Aplicativo</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>Voltar</Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

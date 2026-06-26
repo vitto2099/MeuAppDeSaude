@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F7F9FC',
+    backgroundColor: 'transparent',
   },
   header: {
     paddingHorizontal: 20,
@@ -94,7 +94,7 @@ export const styles = StyleSheet.create({
   // Estilos de Lembretes
   card: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderRadius: 12,
     marginBottom: 12,
     elevation: 2,
@@ -169,7 +169,7 @@ export const styles = StyleSheet.create({
     color: '#666',
     fontStyle: 'italic',
     marginTop: 6,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: 'transparent',
     padding: 6,
     borderRadius: 6,
   },
@@ -233,7 +233,7 @@ export const styles = StyleSheet.create({
 
   // Card do Estoque de Medicamentos
   medCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,
@@ -317,7 +317,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 24,
@@ -374,7 +374,7 @@ export const styles = StyleSheet.create({
     marginTop: 12,
   },
   input: {
-    backgroundColor: '#F8F9FA',
+    backgroundColor: 'transparent',
     borderWidth: 1,
     borderColor: '#DADCE0',
     borderRadius: 8,

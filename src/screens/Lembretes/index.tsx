@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { 
+import {  
   View, 
   Text, 
   TouchableOpacity, 
@@ -8,12 +8,14 @@ import {
   Alert, 
   Modal, 
   TextInput, 
-  ScrollView 
-} from 'react-native';
+  ScrollView,
+  Platform
+, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { styles } from './styles';
@@ -93,6 +95,12 @@ export default function TelaLembretes({ navigation }: Props) {
   const [tipoAcao, setTipoAcao] = useState<'consulta' | 'exercicio' | 'agua' | 'pressao' | 'outro'>('agua');
   const [acaoPersonalizada, setAcaoPersonalizada] = useState('');
   const [horarioAcao, setHorarioAcao] = useState('');
+
+  const [showPickerRemedio, setShowPickerRemedio] = useState(false);
+  const [dateRemedio, setDateRemedio] = useState(new Date());
+
+  const [showPickerAcao, setShowPickerAcao] = useState(false);
+  const [dateAcao, setDateAcao] = useState(new Date());
 
   // --- ESTADOS DA ABA DE ESTOQUE MÉDICO ---
   const [medicamentos, setMedicamentos] = useState<Medicamento[]>([]);
@@ -519,7 +527,8 @@ export default function TelaLembretes({ navigation }: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_lembretes.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       {/* Cabeçalho */}
       <View style={styles.header}>
         <Text style={styles.title}>Lembretes & Farmácia</Text>
@@ -607,7 +616,7 @@ export default function TelaLembretes({ navigation }: Props) {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.medCard}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, width: '100%', height: '100%' }}>
                   <Text style={styles.medTitle}>{item.nome}</Text>
                   <Text style={styles.medSub}>{item.dosagem} - {item.forma}</Text>
                 </View>
@@ -698,14 +707,31 @@ export default function TelaLembretes({ navigation }: Props) {
                   />
 
                   <Text style={styles.label}>Horário *</Text>
-                  <TextInput 
-                    style={styles.input}
-                    placeholder="Ex: 08:00, 22:30"
-                    placeholderTextColor="#999"
-                    value={horarioRemedio}
-                    onChangeText={setHorarioRemedio}
-                    keyboardType="numbers-and-punctuation"
-                  />
+                  <TouchableOpacity 
+                    style={[styles.input, { justifyContent: 'center' }]} 
+                    onPress={() => setShowPickerRemedio(true)}
+                  >
+                    <Text style={{ color: horarioRemedio ? '#333' : '#999' }}>
+                      {horarioRemedio || "Toque para escolher o horário"}
+                    </Text>
+                  </TouchableOpacity>
+                  {showPickerRemedio && (
+                    <DateTimePicker
+                      value={dateRemedio}
+                      mode="time"
+                      is24Hour={true}
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowPickerRemedio(Platform.OS === 'ios');
+                        if (selectedDate) {
+                          setDateRemedio(selectedDate);
+                          const hours = selectedDate.getHours().toString().padStart(2, '0');
+                          const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
+                          setHorarioRemedio(`${hours}:${minutes}`);
+                        }
+                      }}
+                    />
+                  )}
 
                   <Text style={styles.label}>Frequência *</Text>
                   <TextInput 
@@ -765,14 +791,31 @@ export default function TelaLembretes({ navigation }: Props) {
                   )}
 
                   <Text style={styles.label}>Horário *</Text>
-                  <TextInput 
-                    style={styles.input}
-                    placeholder="Ex: 14:00, 19:30"
-                    placeholderTextColor="#999"
-                    value={horarioAcao}
-                    onChangeText={setHorarioAcao}
-                    keyboardType="numbers-and-punctuation"
-                  />
+                  <TouchableOpacity 
+                    style={[styles.input, { justifyContent: 'center' }]} 
+                    onPress={() => setShowPickerAcao(true)}
+                  >
+                    <Text style={{ color: horarioAcao ? '#333' : '#999' }}>
+                      {horarioAcao || "Toque para escolher o horário"}
+                    </Text>
+                  </TouchableOpacity>
+                  {showPickerAcao && (
+                    <DateTimePicker
+                      value={dateAcao}
+                      mode="time"
+                      is24Hour={true}
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowPickerAcao(Platform.OS === 'ios');
+                        if (selectedDate) {
+                          setDateAcao(selectedDate);
+                          const hours = selectedDate.getHours().toString().padStart(2, '0');
+                          const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
+                          setHorarioAcao(`${hours}:${minutes}`);
+                        }
+                      }}
+                    />
+                  )}
                 </View>
               )}
             </ScrollView>
@@ -875,5 +918,6 @@ export default function TelaLembretes({ navigation }: Props) {
       </Modal>
 
     </SafeAreaView>
+    </ImageBackground>
   );
 }

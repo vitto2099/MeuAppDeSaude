@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, Dimensions, ScrollView, Image } from 'react-native';
+import {  View, Text, TouchableOpacity, SafeAreaView, Dimensions, ScrollView, Image , ImageBackground } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { FontAwesome5, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
@@ -19,7 +19,8 @@ export default function TelaInicial({ navigation }: Props) {
   const userName = perfil?.nome || 'Paciente';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_inicial.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.header}>
           <View style={styles.headerTop}>
@@ -78,6 +79,7 @@ export default function TelaInicial({ navigation }: Props) {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

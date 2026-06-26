@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Modal } from 'react-native';
+import {  View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Alert, Modal , ImageBackground } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { useStore } from '../../store/useStore';
@@ -89,7 +89,8 @@ export default function ProfileScreen({ navigation }: Props) {
   const treinosNaSemana = treinos.length % 6; // Mock para barra de progresso
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={require('../../../assets/bg_perfil.png')} style={{ flex: 1, width: '100%', height: '100%' }} resizeMode="cover">
+      <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>IMC & Educação Física</Text>
         <Text style={styles.subtitle}>Calcule seu IMC e acompanhe seus treinos físicos em um só lugar.</Text>
@@ -240,6 +241,7 @@ export default function ProfileScreen({ navigation }: Props) {
       </Modal>
 
     </SafeAreaView>
+    </ImageBackground>
   );
 }
 

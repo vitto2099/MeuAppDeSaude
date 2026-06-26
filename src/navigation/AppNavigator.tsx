@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TelaInicial from '../screens/Inicial';
@@ -26,10 +27,18 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const TransparentTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'transparent',
+  },
+};
+
 export default function AppNavigator() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#F8F9FA' } }}>
+    <NavigationContainer theme={TransparentTheme}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}>
         <Stack.Screen name="Login" component={TelaLogin} />
         <Stack.Screen name="Cadastro" component={TelaCadastro} />
         <Stack.Screen name="Perfil" component={TelaPerfil} />
